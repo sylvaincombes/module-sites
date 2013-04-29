@@ -40,7 +40,6 @@ class Site extends \ICanBoogie\ActiveRecord
 	const TLD = 'tld';
 	const TITLE = 'title';
 	const ADMIN_TITLE = 'admin_title';
-	const MODEL = 'model';
 	const LANGUAGE = 'language';
 	const TIMEZONE = 'tmezone';
 	const NATIVEID = 'nativeid';
@@ -325,7 +324,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	{
 		$native_id = $this->nativeid;
 
-		return $native_id ? $this->_model[$native_id] : $this;
+		return $native_id ? $this->model[$native_id] : $this;
 	}
 
 	/**
@@ -337,11 +336,11 @@ class Site extends \ICanBoogie\ActiveRecord
 	{
 		if ($this->nativeid)
 		{
-			return $this->_model->where('siteid != ? AND (siteid = ? OR nativeid = ?)', $this->siteid, $this->nativeid, $this->nativeid)->order('language')->all;
+			return $this->model->where('siteid != ? AND (siteid = ? OR nativeid = ?)', $this->siteid, $this->nativeid, $this->nativeid)->order('language')->all;
 		}
 		else
 		{
-			return $this->_model->where('nativeid = ?', $this->siteid)->order('language')->all;
+			return $this->model->where('nativeid = ?', $this->siteid)->order('language')->all;
 		}
 	}
 

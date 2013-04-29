@@ -24,8 +24,8 @@ class SiteTest extends \PHPUnit_Framework_TestCase
 		$serialized_site = serialize($site);
 		$unserialized_site = unserialize($serialized_site);
 
-		$this->assertEquals($site->_model_id, $unserialized_site->_model_id);
-		$this->assertArrayNotHasKey('_model_id', $site->to_array());
+		$this->assertEquals($site->model_id, $unserialized_site->model_id);
+		$this->assertArrayNotHasKey('model_id', $site->to_array());
 	}
 
 	public function test_created_at()

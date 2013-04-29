@@ -1,6 +1,6 @@
 {
 	"name": "icybee/module-sites",
-	"type": "icybee-module",
+	"type": "icanboogie-module",
 	"description": "Manages websites",
 	"keywords": [ "website" ],
 	"license": "BSD-3-Clause",
@@ -15,9 +15,8 @@
 	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.3.0",
-		"icanboogie/datetime": "*",
-		"icanboogie/activerecord": "*",
-		"icybee/module-installer": "*"
+		"icanboogie/module-installer": "*",
+		"icanboogie/activerecord": "*"
 	},
 	"autoload": {
 		"classmap": [ "lib" ]

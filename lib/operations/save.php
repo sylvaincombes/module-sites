@@ -16,7 +16,7 @@ use ICanBoogie\I18n\FormattedString;
 /**
  * Creates or updates a website.
  */
-class SaveOperation extends \Icybee\SaveOperation
+class SaveOperation extends \ICanBoogie\SaveOperation
 {
 	protected function process()
 	{

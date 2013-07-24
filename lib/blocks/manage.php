@@ -11,8 +11,6 @@
 
 namespace Icybee\Modules\Sites;
 
-use Brickrouge\DropdownMenu;
-
 /**
  * An element to manage websites.
  */
@@ -26,118 +24,80 @@ class ManageBlock extends \Icybee\ManageBlock
 		$document->js->add(DIR . 'public/admin.js');
 	}
 
-	public function __construct($module, array $tags=array())
+	public function __construct($module, array $attributes=array())
 	{
 		global $core;
 
 		parent::__construct
 		(
-			$module, $tags + array
+			$module, $attributes + array
 			(
-				self::T_KEY => 'siteid',
 				self::T_ORDER_BY => array('updated_at', 'desc'),
 				self::T_COLUMNS_ORDER => array('title', 'url', 'language', 'timezone', 'updated_at', 'status')
 			)
 		);
 	}
 
-	protected function columns()
+	/**
+	 * Adds the following columns:
+	 *
+	 * - `title`: An instance of {@link ManageBlock\TitleColumn}.
+	 * - `url`: An instance of {@link ManageBlock\URLColumn}.
+	 * - `language`: An instance of {@link ManageBlock\LanguageColumn}.
+	 * - `status`: An instance of {@link ManageBlock\StatusColumn}.
+	 * - `timezone`: An instance of {@link ManageBlock\TimezoneColumn}.
+	 * - `update_at`: An instance of {@link \Icybee\ManageBlock\DateTimeColumn}.
+	 */
+	protected function get_available_columns()
 	{
-		return array
+		return array_merge(parent::get_available_columns(), array
 		(
-			'title' => array
+			'title' => __CLASS__ . '\TitleColumn',
+			'url' => __CLASS__ . '\URLColumn',
+			'language' => __CLASS__ . '\LanguageColumn',
+			'status' => __CLASS__ . '\StatusColumn',
+			'timezone' => __CLASS__ . '\TimezoneColumn',
+			'updated_at' => 'Icybee\ManageBlock\DateTimeColumn'
+		));
+	}
+}
+
+namespace Icybee\Modules\Sites\ManageBlock;
+
+use Brickrouge\DropdownMenu;
+
+use Icybee\ManageBlock\Column;
+use Icybee\Modules\Sites\Site;
+use Icybee\ManageBlock\FilterDecorator;
+use Icybee\ManageBlock\EditDecorator;
+
+/* @var $record \Icybee\Modules\Sites\Site */
+
+class TitleColumn extends Column
+{
+	public function render_cell($record)
+	{
+		return new EditDecorator($record->title, $record);
+	}
+}
+
+/**
+ * Representation of the `status` column.
+ */
+class StatusColumn extends Column
+{
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	{
+		parent::__construct
+		(
+			$manager, $id, $options + array
 			(
-
-			),
-
-			'url' => array
-			(
-
-			),
-
-			'status' => array
-			(
-				'label' => 'Status'
-			),
-
-			'timezone' => array
-			(
-				'discreet' => true
-			),
-
-			'updated_at' => array
-			(
-				'class' => 'date',
-				self::COLUMN_HOOK => array($this, 'render_cell_datetime'),
-				'default_order' => -1
+				'title' => 'Status'
 			)
 		);
 	}
 
-	protected function extend_column_url(array $column, $id, array $fields)
-	{
-		return array
-		(
-			'orderable' => false
-		)
-
-		+ parent::extend_column($column, $id, $fields);
-	}
-
-	protected function render_cell_title($record, $property)
-	{
-		return $this->render_edit_cell($record, $property);
-	}
-
-	protected function render_cell_url(Site $record, $property)
-	{
-		$parts = explode('.', $_SERVER['SERVER_NAME']);
-		$parts = array_reverse($parts);
-
-		if ($record->tld)
-		{
-			$parts[0] = '<strong>' . $record->tld . '</strong>';
-		}
-
-		if ($record->domain)
-		{
-			$parts[1] = '<strong>' . $record->domain . '</strong>';
-		}
-
-		if ($record->subdomain)
-		{
-			$parts[2] = '<strong>' . $record->subdomain . '</strong>';
-		}
-		else if (empty($parts[2]))
-		{
-			unset($parts[2]);
-		}
-
-		$label = 'http://' . implode('.', array_reverse($parts)) . ($record->path ? '<strong>' . $record->path . '</strong>' : '');
-
-		return '<a href="' . $record->url . '">' . $label . '</a>';
-	}
-
-	protected function render_cell_language($record, $property)
-	{
-		global $core;
-
-		return $this->render_filter_cell($record, $property, \ICanBoogie\capitalize($core->locale->conventions['localeDisplayNames']['languages'][$record->$property]));
-	}
-
-	protected function render_cell_timezone($record, $property)
-	{
-		$timezone = $record->$property;
-
-		if (!$timezone)
-		{
-			return '<em title="Inherited from the server\'s configuration" class="light">' . date_default_timezone_get() . '</em>';
-		}
-
-		return $this->render_filter_cell($record, $property);
-	}
-
-	protected function render_cell_status(Site $record, $property)
+	public function render_cell($record)
 	{
 		static $labels = array
 		(
@@ -175,8 +135,115 @@ class ManageBlock extends \Icybee\ManageBlock
 		return <<<EOT
 <div class="btn-group" data-property="status" data-site-id="$site_id" data-classes="$classes_json">
 	<span class="btn $status_class dropdown-toggle" data-toggle="dropdown"><span class="text">$status_label</span> <span class="caret"></span></span>
-    $menu
+	$menu
 </div>
 EOT;
+	}
+}
+
+/**
+ * Representation of the `url` column.
+ */
+class URLColumn extends Column
+{
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	{
+		parent::__construct
+		(
+			$manager, $id, $options + array
+			(
+				'orderable' => false
+			)
+		);
+	}
+
+	public function render_cell($record)
+	{
+		$parts = explode('.', $_SERVER['SERVER_NAME']);
+		$parts = array_reverse($parts);
+
+		if ($record->tld)
+		{
+			$parts[0] = '<strong>' . $record->tld . '</strong>';
+		}
+
+		if ($record->domain)
+		{
+			$parts[1] = '<strong>' . $record->domain . '</strong>';
+		}
+
+		if ($record->subdomain)
+		{
+			$parts[2] = '<strong>' . $record->subdomain . '</strong>';
+		}
+		else if (empty($parts[2]))
+		{
+			unset($parts[2]);
+		}
+
+		$label = 'http://' . implode('.', array_reverse($parts)) . ($record->path ? '<strong>' . $record->path . '</strong>' : '');
+
+		return '<a href="' . $record->url . '">' . $label . '</a>';
+	}
+}
+
+/**
+ * Representation of the `timezone` column.
+ */
+class TimezoneColumn extends Column
+{
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	{
+		parent::__construct
+		(
+			$manager, $id, $options + array
+			(
+				'discreet' => true
+			)
+		);
+	}
+
+	public function render_cell($record)
+	{
+		$timezone = $record->timezone;
+
+		if (!$timezone)
+		{
+			return '<em title="Inherited from the server\'s configuration" class="light">' . date_default_timezone_get() . '</em>';
+		}
+
+		return new FilterDecorator($record, $this->id, $this->manager->is_filtering($this->id));
+	}
+}
+
+/**
+ * Representation of the `language` column.
+ */
+class LanguageColumn extends Column
+{
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	{
+		parent::__construct
+		(
+			$manager, $id, $options + array
+			(
+				'discreet' => true
+			)
+		);
+	}
+
+	public function render_cell($record)
+	{
+		global $core;
+
+		$property = $this->id;
+
+		return new FilterDecorator
+		(
+			$record,
+			$property,
+			$this->manager->is_filtering($property),
+			\ICanBoogie\capitalize($core->locale->conventions['localeDisplayNames']['languages'][$record->$property])
+		);
 	}
 }

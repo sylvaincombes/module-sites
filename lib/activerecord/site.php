@@ -79,18 +79,6 @@ class Site extends \ICanBoogie\ActiveRecord
 	}
 
 	/**
-	 * Adds the {@link $created_at} and {@link $updated_at} properties.
-	 */
-	public function to_array()
-	{
-		return parent::to_array() + array
-		(
-			'created_at' => $this->created_at,
-			'updated_at' => $this->updated_at
-		);
-	}
-
-	/**
 	 * Clears the sites cache.
 	 */
 	public function save()
@@ -111,24 +99,24 @@ class Site extends \ICanBoogie\ActiveRecord
 	 */
 	protected function volatile_get_created_at()
 	{
-		$time = $this->created_at;
+		$datetime = $this->created_at;
 
-		if ($time instanceof DateTime)
+		if ($datetime instanceof DateTime)
 		{
-			return $time;
+			return $datetime;
 		}
 
-		return $this->created_at = $time === null ? DateTime::none() : new DateTime($time, 'utc');
+		return $this->created_at = ($datetime === null) ? DateTime::none() : new DateTime($datetime, 'utc');
 	}
 
 	/**
 	 * Sets the created time.
 	 *
-	 * @param \DateTime|string $value
+	 * @param \DateTime|string $datetime
 	 */
-	protected function volatile_set_created_at($value)
+	protected function volatile_set_created_at($datetime)
 	{
-		$this->created_at = $value;
+		$this->created_at = $datetime;
 	}
 
 	private $updated_at;
@@ -140,24 +128,24 @@ class Site extends \ICanBoogie\ActiveRecord
 	 */
 	protected function volatile_get_updated_at()
 	{
-		$time = $this->updated_at;
+		$datetime = $this->updated_at;
 
-		if ($time instanceof DateTime)
+		if ($datetime instanceof DateTime)
 		{
-			return $time;
+			return $datetime;
 		}
 
-		return $this->updated_at = $time === null ? DateTime::none() : new DateTime($time, 'utc');
+		return $this->updated_at = ($datetime === null) ? DateTime::none() : new DateTime($datetime, 'utc');
 	}
 
 	/**
 	 * Sets the updated time.
 	 *
-	 * @param \DateTime|string $value
+	 * @param \DateTime|string $datetime
 	 */
-	protected function volatile_set_updated_at($value)
+	protected function volatile_set_updated_at($datetime)
 	{
-		$this->updated_at = $value;
+		$this->updated_at = $datetime;
 	}
 
 	/**

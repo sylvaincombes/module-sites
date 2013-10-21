@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Sites;
 
 use ICanBoogie\Core;
+use ICanBoogie\Errors;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
@@ -32,7 +33,28 @@ class Hooks
 	 */
 	static public function on_core_run(Core\RunEvent $event, Core $target)
 	{
-		$target->site = $site = Model::find_by_request($event->request);
+		#
+		# If the ICanBoogie\ActiveRecord\StatementInvalid is raised it might be becuase the
+		# module is not installed, in that case we silently return, otherwise we re-throw the
+		# exception.
+		#
+
+		try
+		{
+			$target->site = $site = Model::find_by_request($event->request);
+		}
+		catch (\ICanBoogie\ActiveRecord\StatementInvalid $e)
+		{
+			global $core;
+
+			if (!$core->models['sites']->is_installed(new Errors()))
+			{
+				return;
+			}
+
+			throw $e;
+		}
+
 		$target->locale = $site->language;
 
 		if ($site->timezone)

@@ -55,18 +55,18 @@ class Site extends \ICanBoogie\ActiveRecord
 	const STATUS_UNAVAILABLE = 503;
 
 	public $siteid;
-	public $path;
-	public $tld;
-	public $domain;
-	public $subdomain;
+	public $path = '';
+	public $tld = '';
+	public $domain = '';
+	public $subdomain = '';
 	public $title;
-	public $admin_title;
-	public $weight;
-	public $language;
-	public $nativeid;
-	public $timezone;
-	public $email;
-	public $status;
+	public $admin_title = '';
+	public $weight = 0;
+	public $language = '';
+	public $nativeid = 0;
+	public $timezone = '';
+	public $email = '';
+	public $status = 0;
 
 	/**
 	 * Default `$model` to "sites".

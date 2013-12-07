@@ -97,7 +97,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return \ICanBoogie\DateTime
 	 */
-	protected function volatile_get_created_at()
+	protected function get_created_at()
 	{
 		$datetime = $this->created_at;
 
@@ -114,7 +114,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	 *
 	 * @param \DateTime|string $datetime
 	 */
-	protected function volatile_set_created_at($datetime)
+	protected function set_created_at($datetime)
 	{
 		$this->created_at = $datetime;
 	}
@@ -126,7 +126,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return \ICanBoogie\DateTime
 	 */
-	protected function volatile_get_updated_at()
+	protected function get_updated_at()
 	{
 		$datetime = $this->updated_at;
 
@@ -143,7 +143,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	 *
 	 * @param \DateTime|string $datetime
 	 */
-	protected function volatile_set_updated_at($datetime)
+	protected function set_updated_at($datetime)
 	{
 		$this->updated_at = $datetime;
 	}
@@ -153,7 +153,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return string
 	 */
-	protected function volatile_get_url()
+	protected function get_url()
 	{
 		$parts = explode('.', $_SERVER['SERVER_NAME']);
 		$parts = array_reverse($parts);
@@ -184,7 +184,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	/**
 	 * Returns the available templates for the site
 	 */
-	protected function get_templates()
+	protected function lazy_get_templates()
 	{
 		$templates = array();
 		$root = \ICanBoogie\DOCUMENT_ROOT;
@@ -234,7 +234,7 @@ class Site extends \ICanBoogie\ActiveRecord
 		return $templates;
 	}
 
-	protected function get_partial_templates()
+	protected function lazy_get_partial_templates()
 	{
 		$templates = array();
 		$root = \ICanBoogie\DOCUMENT_ROOT;
@@ -308,7 +308,7 @@ class Site extends \ICanBoogie\ActiveRecord
 		}
 	}
 
-	protected function get_native()
+	protected function lazy_get_native()
 	{
 		$native_id = $this->nativeid;
 
@@ -320,7 +320,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return array
 	 */
-	protected function get_translations()
+	protected function lazy_get_translations()
 	{
 		if ($this->nativeid)
 		{
@@ -334,7 +334,7 @@ class Site extends \ICanBoogie\ActiveRecord
 
 	private $_server_name;
 
-	protected function volatile_get_server_name()
+	protected function get_server_name()
 	{
 		if ($this->_server_name)
 		{
@@ -367,7 +367,7 @@ class Site extends \ICanBoogie\ActiveRecord
 		return $this->_server_name = new ServerName(array($parts[2], $parts[1], $parts[0]));
 	}
 
-	protected function volatile_set_server_name($server_name)
+	protected function set_server_name($server_name)
 	{
 		if (!($server_name instanceof ServerName))
 		{

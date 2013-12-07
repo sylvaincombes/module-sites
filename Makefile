@@ -15,7 +15,13 @@ vendor: composer.phar
 	@if [ ! -d "vendor" ] ; then \
 		php composer.phar install --dev ; \
 	fi
-	
+
+update: vendor
+	@php composer.phar update --prefer-source --dev
+
+autoload: vendor
+	@php composer.phar dump-autoload
+
 test: vendor
 	@phpunit
 
@@ -28,7 +34,7 @@ doc: vendor
 	--exclude "*/tests/*" \
 	--exclude "*/composer/*" \
 	--template-config /usr/share/php/data/ApiGen/templates/bootstrap/config.neon
-	
+
 clean:
 	@rm -fR docs
 	@rm -fR vendor

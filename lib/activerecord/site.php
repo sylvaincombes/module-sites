@@ -13,7 +13,6 @@ namespace Icybee\Modules\Sites;
 
 use ICanBoogie\ActiveRecord\CreatedAtProperty;
 use ICanBoogie\ActiveRecord\UpdatedAtProperty;
-use ICanBoogie\DateTime;
 use ICanBoogie\Debug;
 
 /**
@@ -30,8 +29,8 @@ use ICanBoogie\Debug;
  *
  * This method is injected by the "pages" module.
  *
- * @property mixed $created_at Created time.
- * @property mixed $updated_at Updated time.
+ * @property \ICanBoogie\DateTime $created_at Date and time at which the site was created.
+ * @property \ICanBoogie\DateTime $updated_at Date and time at which the site was updated.
  */
 class Site extends \ICanBoogie\ActiveRecord
 {
@@ -163,12 +162,12 @@ class Site extends \ICanBoogie\ActiveRecord
 					continue;
 				}
 
-			 	$pos = strrpos($file, '.');
+				$pos = strrpos($file, '.');
 
-			 	if (!$pos)
-			 	{
-			 		continue;
-			 	}
+				if (!$pos)
+				{
+					continue;
+				}
 
 				$templates[$file] = $file;
 			}
@@ -213,14 +212,14 @@ class Site extends \ICanBoogie\ActiveRecord
 					continue;
 				}
 
-			 	$pos = strrpos($file, '.');
+				$pos = strrpos($file, '.');
 
-			 	if (!$pos)
-			 	{
-			 		continue;
-			 	}
+				if (!$pos)
+				{
+					continue;
+				}
 
-			 	$id = preg_replace('#\.(php|html)$#', '', $file);
+				$id = preg_replace('#\.(php|html)$#', '', $file);
 				$templates[$id] = $root . $path . '/' . $file;
 			}
 

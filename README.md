@@ -1,57 +1,6 @@
-# The `sites` module [![Build Status](https://travis-ci.org/Icybee/module-sites.png?branch=master)](https://travis-ci.org/Icybee/module-sites)
+# The `sites` module [![Build Status](https://travis-ci.org/Icybee/module-sites.png?branch=2.0)](https://travis-ci.org/Icybee/module-sites)
 
 Manages websites.
-
-
-
-
-
-## Requirement
-
-The package requires PHP 5.4 or later.  
-The package also requires an installation of [Icybee](http://icybee.org).
-
-
-
-
-
-## Installation
-
-The recommended way to install this package is through [Composer](http://getcomposer.org/).
-Create a `composer.json` file and run `php composer.phar install` command to install it:
-
-```json
-{
-	"minimum-stability": "dev",
-	"require":
-	{
-		"icybee/module-sites": "2.x"
-	}
-}
-```
-
-
-
-
-
-### Cloning the repository
-
-The package is [available on GitHub](https://github.com/Icybee/module-sites), its repository can be
-cloned with the following command line:
-
-	$ git clone git://github.com/Icybee/module-sites.git
-
-
-
-
-
-## Documentation
-
-The package is documented as part of the [Icybee](http://icybee.org/) CMS
-[documentation](http://icybee.org/docs/). The documentation for the package and its
-dependencies can be generated with the `make doc` command. The documentation is generated in
-the `docs` directory using [ApiGen](http://apigen.org/). The package directory can later by
-cleaned with the `make clean` command.
 
 
 
@@ -157,6 +106,56 @@ $core->request->context->site_id;
 
 
 
+## Requirement
+
+The package requires PHP 5.4 or later.
+
+
+
+
+
+## Installation
+
+The recommended way to install this package is through [Composer](http://getcomposer.org/).
+Create a `composer.json` file and run `php composer.phar install` command to install it:
+
+```json
+{
+	"minimum-stability": "dev",
+	"require":
+	{
+		"icybee/module-sites": "2.x"
+	}
+}
+```
+
+
+
+
+
+### Cloning the repository
+
+The package is [available on GitHub](https://github.com/Icybee/module-sites), its repository can be
+cloned with the following command line:
+
+	$ git clone git://github.com/Icybee/module-sites.git sites
+
+
+
+
+
+## Documentation
+
+The package is documented as part of the [Icybee](http://icybee.org/) CMS
+[documentation](http://icybee.org/docs/). The documentation for the package and its
+dependencies can be generated with the `make doc` command. The documentation is generated in
+the `docs` directory using [ApiGen](http://apigen.org/). The package directory can later be
+cleaned with the `make clean` command.
+
+
+
+
+
 ## Testing
 
 The test suite is ran with the `make test` command. [Composer](http://getcomposer.org/) is
@@ -165,7 +164,7 @@ directory can later be cleaned with the `make clean` command.
 
 The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
-[![Build Status](https://travis-ci.org/Icybee/module-sites.png?branch=master)](https://travis-ci.org/Icybee/module-sites)
+[![Build Status](https://travis-ci.org/Icybee/module-sites.png?branch=2.0)](https://travis-ci.org/Icybee/module-sites)
 
 
 

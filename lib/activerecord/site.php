@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Sites;
 
+use ICanBoogie\ActiveRecord\CreatedAtProperty;
+use ICanBoogie\ActiveRecord\UpdatedAtProperty;
 use ICanBoogie\DateTime;
 use ICanBoogie\Debug;
 
@@ -68,6 +70,9 @@ class Site extends \ICanBoogie\ActiveRecord
 	public $email = '';
 	public $status = 0;
 
+	use CreatedAtProperty;
+	use UpdatedAtProperty;
+
 	/**
 	 * Default `$model` to "sites".
 	 *
@@ -88,64 +93,6 @@ class Site extends \ICanBoogie\ActiveRecord
 		unset($core->vars['cached_sites']);
 
 		return parent::save();
-	}
-
-	private $created_at;
-
-	/**
-	 * Returns the created time.
-	 *
-	 * @return \ICanBoogie\DateTime
-	 */
-	protected function get_created_at()
-	{
-		$datetime = $this->created_at;
-
-		if ($datetime instanceof DateTime)
-		{
-			return $datetime;
-		}
-
-		return $this->created_at = ($datetime === null) ? DateTime::none() : new DateTime($datetime, 'utc');
-	}
-
-	/**
-	 * Sets the created time.
-	 *
-	 * @param \DateTime|string $datetime
-	 */
-	protected function set_created_at($datetime)
-	{
-		$this->created_at = $datetime;
-	}
-
-	private $updated_at;
-
-	/**
-	 * Returns the updated time.
-	 *
-	 * @return \ICanBoogie\DateTime
-	 */
-	protected function get_updated_at()
-	{
-		$datetime = $this->updated_at;
-
-		if ($datetime instanceof DateTime)
-		{
-			return $datetime;
-		}
-
-		return $this->updated_at = ($datetime === null) ? DateTime::none() : new DateTime($datetime, 'utc');
-	}
-
-	/**
-	 * Sets the updated time.
-	 *
-	 * @param \DateTime|string $datetime
-	 */
-	protected function set_updated_at($datetime)
-	{
-		$this->updated_at = $datetime;
 	}
 
 	/**

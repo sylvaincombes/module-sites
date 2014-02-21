@@ -8,7 +8,7 @@ Manages websites.
 
 ## Requirement
 
-The package requires PHP 5.3 or later.  
+The package requires PHP 5.4 or later.  
 The package also requires an installation of [Icybee](http://icybee.org).
 
 
@@ -25,7 +25,7 @@ Create a `composer.json` file and run `php composer.phar install` command to ins
 	"minimum-stability": "dev",
 	"require":
 	{
-		"icybee/module-sites": "*"
+		"icybee/module-sites": "2.x"
 	}
 }
 ```

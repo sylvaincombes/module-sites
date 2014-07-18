@@ -295,6 +295,8 @@ class Site extends \ICanBoogie\ActiveRecord
 			$parts[2] = implode('.', array_reverse(array_slice($parts, 2)));
 		}
 
+		$parts += [ 2 => '' ];
+
 		if ($this->tld)
 		{
 			$parts[0] = $this->tld;

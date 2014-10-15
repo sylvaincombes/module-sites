@@ -29,8 +29,8 @@ return array
 					'timezone' => array('varchar', 32), // widest is "America/Argentina/Buenos_Aires" with 30 characters
 					'email' => 'varchar',
 					'status' => array('integer', 'small'),
-					'created_at' => 'timestamp',
-					'updated_at' => 'timestamp'
+					'created_at' => 'datetime',
+					'updated_at' => 'datetime'
 				)
 			)
 		)

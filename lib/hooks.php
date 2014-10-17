@@ -34,7 +34,7 @@ class Hooks
 	static public function on_core_run(Core\RunEvent $event, Core $target)
 	{
 		#
-		# If the ICanBoogie\ActiveRecord\StatementInvalid is raised it might be becuase the
+		# If the ICanBoogie\ActiveRecord\StatementNotValid is raised it might be becuase the
 		# module is not installed, in that case we silently return, otherwise we re-throw the
 		# exception.
 		#
@@ -43,7 +43,7 @@ class Hooks
 		{
 			$target->site = $site = Model::find_by_request($event->request);
 		}
-		catch (\ICanBoogie\ActiveRecord\StatementInvalid $e)
+		catch (\ICanBoogie\ActiveRecord\StatementNotValid $e)
 		{
 			global $core;
 

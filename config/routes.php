@@ -1,19 +1,25 @@
 <?php
 
-return array
-(
-	'!admin:manage' => array
-	(
+return [
 
-	),
+	'!admin:manage' => [
 
-	'!admin:new' => array
-	(
+		'pattern' => '!auto',
+		'controller' => true
 
-	),
+	],
 
-	'!admin:edit' => array
-	(
+	'!admin:new' => [
 
-	)
-);
+		'pattern' => '!auto',
+		'controller' => true
+
+	],
+
+	'!admin:edit' => [
+
+		'pattern' => '!auto',
+		'controller' => true
+
+	]
+];

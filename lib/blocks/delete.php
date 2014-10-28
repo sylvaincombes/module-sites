@@ -15,8 +15,6 @@ class DeleteBlock extends \Icybee\DeleteBlock
 {
 	/**
 	 * Returns the title of the record.
-	 *
-	 * @see Icybee.DeleteBlock::get_record_name()
 	 */
 	protected function get_record_name()
 	{

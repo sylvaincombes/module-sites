@@ -1,28 +1,28 @@
-# The `sites` module [![Build Status](https://travis-ci.org/Icybee/module-sites.png?branch=2.0)](https://travis-ci.org/Icybee/module-sites)
+# Site [![Build Status](https://travis-ci.org/Icybee/module-sites.svg?branch=2.0)](https://travis-ci.org/Icybee/module-sites)
 
-Manages websites.
-
-
-
-
-
-### Event hooks
+The Site module (`sites`) manages the websites served by [Icybee][].
 
 
 
 
 
-#### `ICanBoogie\Core::run`
+## Event hooks
+
+
+
+
+
+### `ICanBoogie\Core::run`
 
 Initializes the `site`, `locale` and `timezone` properties of the core object. If the website has
-a path, the `contextualize()` and `decontextualize()` helpers of the [Routing](https://github.com/ICanBoogie/Routing)
+a base path, the `contextualize()` and `decontextualize()` helpers of the [Routing](https://github.com/ICanBoogie/Routing)
 package are patched.
 
 
 
 
 
-#### `ICanBoogie\HTTP\Dispatcher::dispatch:before`
+### `ICanBoogie\HTTP\Dispatcher::dispatch:before`
 
 Redirects the request to the first available website to the user if the request matches none.
 
@@ -30,15 +30,15 @@ Redirects the request to the first available website to the user if the request 
 
 
 
-### Prototype methods
+## Prototype methods
 
 
 
 
 
-#### `Icybee\Modules\Nodes\Node::get_site`
+### `Icybee\Modules\Nodes\Node::get_site`
 
-Returns the website the node belongs to.
+Returns the website a node belongs to.
 
 ```php
 <?php
@@ -50,35 +50,39 @@ $core->models['nodes']->one->site;
 
 
 
-#### `ICanBoogie\Core::get_site`
+### `ICanBoogie\Core::get_site`
 
-Returns the website matching the request or the initial request.
+Returns the website matching the current request.
 
 ```php
 <?php
 
 $core->site;
+# or
+$core->request->context->site;
 ```
 
 
 
 
 
-#### `ICanBoogie\Core::get_site_id`
+### `ICanBoogie\Core::get_site_id`
 
-Returns the identifier of the website matching the request or the initial request.
+Returns the identifier of the website matching the current request.
 
 ```php
 <?php
 
 $core->site_id;
+# or
+$core->request->context->site_id;
 ```
 
 
 
 
 
-#### `ICanBoogie\HTTP\Request\Context::get_site`
+### `ICanBoogie\HTTP\Request\Context::get_site`
 
 Returns the website matching the request context.
 
@@ -92,7 +96,7 @@ $core->request->context->site;
 
 
 
-#### `ICanBoogie\HTTP\Request\Context::get_site_id`
+### `ICanBoogie\HTTP\Request\Context::get_site_id`
 
 Returns the identifier of the website matching the request context.
 
@@ -101,6 +105,12 @@ Returns the identifier of the website matching the request context.
 
 $core->request->context->site_id;
 ```
+
+
+
+
+
+----------
 
 
 
@@ -116,17 +126,10 @@ The package requires PHP 5.4 or later.
 
 ## Installation
 
-The recommended way to install this package is through [Composer](http://getcomposer.org/).
-Create a `composer.json` file and run `php composer.phar install` command to install it:
+The recommended way to install this package is through [Composer](http://getcomposer.org/):
 
-```json
-{
-	"minimum-stability": "dev",
-	"require":
-	{
-		"icybee/module-sites": "2.x"
-	}
-}
+```
+$ composer require icybee/module-sites
 ```
 
 
@@ -138,7 +141,7 @@ Create a `composer.json` file and run `php composer.phar install` command to ins
 The package is [available on GitHub](https://github.com/Icybee/module-sites), its repository can be
 cloned with the following command line:
 
-	$ git clone git://github.com/Icybee/module-sites.git sites
+	$ git clone https://github.com/Icybee/module-sites.git sites
 
 
 
@@ -164,7 +167,7 @@ directory can later be cleaned with the `make clean` command.
 
 The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
-[![Build Status](https://travis-ci.org/Icybee/module-sites.png?branch=2.0)](https://travis-ci.org/Icybee/module-sites)
+[![Build Status](https://travis-ci.org/Icybee/module-sites.svg?branch=2.0)](https://travis-ci.org/Icybee/module-sites)
 
 
 
@@ -172,4 +175,6 @@ The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
 
 ## License
 
-The module is licensed under the New BSD License - See the LICENSE file for details.
+The module is licensed under the New BSD License - See the [LICENSE](LICENSE) file for details.
+
+[Icybee]: http://icybee.org/

@@ -132,10 +132,10 @@ class Site extends \ICanBoogie\ActiveRecord
 	 */
 	protected function lazy_get_templates()
 	{
-		$templates = array();
+		$templates = [];
 		$root = \ICanBoogie\DOCUMENT_ROOT;
 
-		$models = array('default', 'all');
+		$models = [ 'default', 'all' ];
 
 		foreach ($models as $model)
 		{
@@ -150,7 +150,7 @@ class Site extends \ICanBoogie\ActiveRecord
 
 			if (!$dh)
 			{
-				Debug::trigger('Unable to open directory %path', array('%path' => $path));
+				Debug::trigger('Unable to open directory %path', [ '%path' => $path ]);
 
 				continue;
 			}
@@ -182,10 +182,10 @@ class Site extends \ICanBoogie\ActiveRecord
 
 	protected function lazy_get_partial_templates()
 	{
-		$templates = array();
+		$templates = [];
 		$root = \ICanBoogie\DOCUMENT_ROOT;
 
-		$models = array('default', 'all');
+		$models = [ 'default', 'all' ];
 
 		foreach ($models as $model)
 		{
@@ -200,7 +200,7 @@ class Site extends \ICanBoogie\ActiveRecord
 
 			if (!$dh)
 			{
-				Debug::trigger('Unable to open directory %path', array('%path' => $path));
+				Debug::trigger('Unable to open directory %path', [ '%path' => $path ]);
 
 				continue;
 			}
@@ -230,7 +230,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	}
 
 	/**
-	 * Resolve the location of a relative path according site inheritence.
+	 * Resolve the location of a relative path according site inheritance.
 	 *
 	 * @param string $relative The path to the file to locate.
 	 */
@@ -312,7 +312,7 @@ class Site extends \ICanBoogie\ActiveRecord
 			$parts[2] = $this->subdomain;
 		}
 
-		return $this->_server_name = new ServerName(array($parts[2], $parts[1], $parts[0]));
+		return $this->_server_name = new ServerName([ $parts[2], $parts[1], $parts[0] ]);
 	}
 
 	protected function set_server_name($server_name)

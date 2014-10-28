@@ -20,30 +20,30 @@ class EditBlock extends \Icybee\EditBlock
 {
 	protected function lazy_get_attributes()
 	{
-		return \ICanBoogie\array_merge_recursive
-		(
-			parent::lazy_get_attributes(), array
-			(
-				Element::GROUPS => array
-				(
-					'location' => array
-					(
-						'title' => 'Emplacement',
-						'class' => 'location'
-					),
+		return \ICanBoogie\array_merge_recursive(parent::lazy_get_attributes(), [
 
-					'i18n' => array
-					(
-						'title' => 'Internationalisation'
-					),
+			Element::GROUPS => [
 
-					'advanced' => array
-					(
-						'title' => 'Advanced parameters'
-					)
-				)
-			)
-		);
+				'location' => [
+
+					'title' => 'Emplacement',
+					'class' => 'location'
+
+				],
+
+				'i18n' => [
+
+					'title' => 'Internationalisation'
+
+				],
+
+				'advanced' => [
+
+					'title' => 'Advanced parameters'
+
+				]
+			]
+		]);
 	}
 
 	protected function lazy_get_children()
@@ -84,148 +84,115 @@ class EditBlock extends \Icybee\EditBlock
 			$placeholder_subdomain = $parts[2];
 		}
 
-		return array_merge
-		(
-			parent::lazy_get_children(), array
-			(
-				'title' => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Title',
-						Element::REQUIRED => true
-					)
-				),
+		return array_merge(parent::lazy_get_children(), [
 
-				'admin_title' => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Admin title',
-						Element::DESCRIPTION => "Il s'agit du titre utilisé par l'interface d'administration."
-					)
-				),
+			'title' => new Text([
 
-				'email' => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Email',
-						Element::REQUIRED => true,
-						Element::VALIDATOR => array('Brickrouge\Form::validate_email'),
-						Element::DESCRIPTION => "The site's email is usually used as default sender email,
-						but can also be used as a contact address."
-					)
-				),
+				Form::LABEL => 'Title',
+				Element::REQUIRED => true
 
-				'subdomain' => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Sous-domaine',
-						Element::GROUP => 'location',
+			]),
 
-						'size' => 16,
-						'placeholder' => $placeholder_subdomain
-					)
-				),
+			'admin_title' => new Text([
 
-				'domain' => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Domaine',
-						Text::ADDON => '.',
-						Text::ADDON_POSITION => 'before',
-						Element::GROUP => 'location',
+				Form::LABEL => 'Admin title',
+				Element::DESCRIPTION => "Il s'agit du titre utilisé par l'interface d'administration."
 
-						'placeholder' => $placeholder_domain
-					)
-				),
+			]),
 
-				'tld' => new Text
-				(
-					array
-					(
-						Form::LABEL => 'TLD',
-						Text::ADDON => '.',
-						Text::ADDON_POSITION => 'before',
-						Element::GROUP => 'location',
+			'email' => new Text([
 
-						'size' => 8,
-						'placeholder' => $placeholder_tld
-					)
-				),
+				Form::LABEL => 'Email',
+				Element::REQUIRED => true,
+				Element::VALIDATOR => [ 'Brickrouge\Form::validate_email' ],
+				Element::DESCRIPTION => "The site's email is usually used as default sender email,
+				but can also be used as a contact address."
 
-				'path' => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Chemin',
-						Text::ADDON => '/',
-						Text::ADDON_POSITION => 'before',
-						Element::GROUP => 'location',
+			]),
 
-						'value' => trim($values['path'], '/')
-					)
-				),
+			'subdomain' => new Text([
 
-				'language' => new Element
-				(
-					'select', array
-					(
-						Form::LABEL => 'Langue',
-						Element::REQUIRED => true,
-						Element::GROUP => 'i18n',
-						Element::OPTIONS => array(null => '') + $languages
-					)
-				),
+				Form::LABEL => 'Sous-domaine',
+				Element::GROUP => 'location',
 
-				'nativeid' =>  $this->get_control_translation_sources($values),
+				'size' => 16,
+				'placeholder' => $placeholder_subdomain
 
-				'timezone' => new Widget\TimeZone
-				(
-					array
-					(
-						Form::LABEL => 'Fuseau horaire',
-						Element::GROUP => 'i18n',
-						Element::DESCRIPTION => "Par défaut, le fuseau horaire du serveur est
-						utilisé (actuellement&nbsp;: <q>" . ($tz ? $tz : 'non défini') . "</q>)."
-					)
-				),
+			]),
 
-				'status' => new Element
-				(
-					'select', array
-					(
-						Form::LABEL => 'Status',
-						Element::GROUP => 'advanced',
-						Element::OPTIONS => array
-						(
-							Site::STATUS_OK => 'Ok (online)',
-							Site::STATUS_UNAUTHORIZED => 'Unauthorized',
-							Site::STATUS_NOT_FOUND => 'Not found (offline)',
-							Site::STATUS_UNAVAILABLE => 'Unavailable'
-						)
-					)
-				)/*,
+			'domain' => new Text([
 
-				'model' => new Element
-				(
-					'select', array
-					(
-						Form::LABEL => 'Modèle',
-						Element::GROUP => 'advanced',
-						Element::OPTIONS => array(null => '<défaut>') + $this->get_site_models()
-					)
-				)*/
-			)
-		);
+				Form::LABEL => 'Domaine',
+				Text::ADDON => '.',
+				Text::ADDON_POSITION => 'before',
+				Element::GROUP => 'location',
+
+				'placeholder' => $placeholder_domain
+
+			]),
+
+			'tld' => new Text([
+
+				Form::LABEL => 'TLD',
+				Text::ADDON => '.',
+				Text::ADDON_POSITION => 'before',
+				Element::GROUP => 'location',
+
+				'size' => 8,
+				'placeholder' => $placeholder_tld
+
+			]),
+
+			'path' => new Text([
+
+				Form::LABEL => 'Chemin',
+				Text::ADDON => '/',
+				Text::ADDON_POSITION => 'before',
+				Element::GROUP => 'location',
+
+				'value' => trim($values['path'], '/')
+
+			]),
+
+			'language' => new Element('select', [
+
+				Form::LABEL => 'Langue',
+				Element::REQUIRED => true,
+				Element::GROUP => 'i18n',
+				Element::OPTIONS => [ null => '' ] + $languages
+
+			]),
+
+			'nativeid' =>  $this->get_control_translation_sources($values),
+
+			'timezone' => new Widget\TimeZone([
+
+				Form::LABEL => 'Fuseau horaire',
+				Element::GROUP => 'i18n',
+				Element::DESCRIPTION => "Par défaut, le fuseau horaire du serveur est
+				utilisé (actuellement&nbsp;: <q>" . ($tz ? $tz : 'non défini') . "</q>)."
+
+			]),
+
+			'status' => new Element('select', [
+
+				Form::LABEL => 'Status',
+				Element::GROUP => 'advanced',
+				Element::OPTIONS => [
+
+					Site::STATUS_OK => 'Ok (online)',
+					Site::STATUS_UNAUTHORIZED => 'Unauthorized',
+					Site::STATUS_NOT_FOUND => 'Not found (offline)',
+					Site::STATUS_UNAVAILABLE => 'Unavailable'
+
+				]
+			])
+		]);
 	}
 
 	private function get_site_models()
 	{
-		$models = array();
+		$models = [];
 
 		$dh = opendir(\ICanBoogie\DOCUMENT_ROOT . 'protected');
 
@@ -261,14 +228,12 @@ class EditBlock extends \Icybee\EditBlock
 			return;
 		}
 
-		return new Element
-		(
-			'select', array
-			(
-				Form::LABEL => 'Traduction source',
-				Element::GROUP => 'i18n',
-				Element::OPTIONS => array(0 => '<none>') + $options
-			)
-		);
+		return new Element('select', [
+
+			Form::LABEL => 'Translation source',
+			Element::GROUP => 'i18n',
+			Element::OPTIONS => [ 0 => '<none>' ] + $options
+
+		]);
 	}
 }

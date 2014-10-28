@@ -32,7 +32,7 @@ class ServerName
 	 */
 	public function __toString()
 	{
-		$parts = array($this->subdomain, $this->domain, $this->tld);
+		$parts = [ $this->subdomain, $this->domain, $this->tld ];
 		$parts = array_filter($parts);
 
 		return implode('.', $parts);

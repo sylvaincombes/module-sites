@@ -24,18 +24,14 @@ class ManageBlock extends \Icybee\ManageBlock
 		$document->js->add(DIR . 'public/admin.js');
 	}
 
-	public function __construct($module, array $attributes=array())
+	public function __construct($module, array $attributes=[])
 	{
-		global $core;
+		parent::__construct($module, $attributes + [
 
-		parent::__construct
-		(
-			$module, $attributes + array
-			(
-				self::T_ORDER_BY => array('updated_at', 'desc'),
-				self::T_COLUMNS_ORDER => array('title', 'url', 'language', 'timezone', 'updated_at', 'status')
-			)
-		);
+			self::T_ORDER_BY => [ 'updated_at', 'desc' ],
+			self::T_COLUMNS_ORDER => [ 'title', 'url', 'language', 'timezone', 'updated_at', 'status' ]
+
+		]);
 	}
 
 	/**
@@ -50,15 +46,16 @@ class ManageBlock extends \Icybee\ManageBlock
 	 */
 	protected function get_available_columns()
 	{
-		return array_merge(parent::get_available_columns(), array
-		(
+		return array_merge(parent::get_available_columns(), [
+
 			'title' => __CLASS__ . '\TitleColumn',
 			'url' => __CLASS__ . '\URLColumn',
 			'language' => __CLASS__ . '\LanguageColumn',
 			'status' => __CLASS__ . '\StatusColumn',
 			'timezone' => __CLASS__ . '\TimezoneColumn',
 			'updated_at' => 'Icybee\ManageBlock\DateTimeColumn'
-		));
+
+		]);
 	}
 }
 
@@ -86,49 +83,47 @@ class TitleColumn extends Column
  */
 class StatusColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'title' => 'Status'
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'title' => 'Status'
+
+		]);
 	}
 
 	public function render_cell($record)
 	{
-		static $labels = array
-		(
+		static $labels = [
+
 			Site::STATUS_OK => 'Ok (online)',
 			Site::STATUS_UNAUTHORIZED => 'Unauthorized',
 			Site::STATUS_NOT_FOUND => 'Not found (offline)',
 			Site::STATUS_UNAVAILABLE => 'Unavailable'
-		);
 
-		static $classes = array
-		(
+		];
+
+		static $classes = [
+
 			Site::STATUS_OK => 'btn-success',
 			Site::STATUS_UNAUTHORIZED => 'btn-warning',
 			Site::STATUS_NOT_FOUND => 'btn-danger',
 			Site::STATUS_UNAVAILABLE => 'btn-warning'
-		);
+
+		];
 
 		$status = $record->status;
 		$status_label = isset($labels[$status]) ? $labels[$status] : "<em>Invalid status code: $status</em>";
 		$status_class = isset($classes[$status]) ? $classes[$status] : 'btn-danger';
 		$site_id = $record->siteid;
 
-		$menu = new DropdownMenu
-		(
-			array
-			(
-				DropdownMenu::OPTIONS => $labels,
+		$menu = new DropdownMenu([
 
-				'value' => $status
-			)
-		);
+			DropdownMenu::OPTIONS => $labels,
+
+			'value' => $status
+
+		]);
 
 		$classes_json = \Brickrouge\escape(json_encode($classes));
 
@@ -146,15 +141,13 @@ EOT;
  */
 class URLColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'orderable' => false
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'orderable' => false
+
+		]);
 	}
 
 	public function render_cell($record)
@@ -192,15 +185,13 @@ class URLColumn extends Column
  */
 class TimezoneColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'discreet' => true
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'discreet' => true
+
+		]);
 	}
 
 	public function render_cell($record)
@@ -221,15 +212,13 @@ class TimezoneColumn extends Column
  */
 class LanguageColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'discreet' => true
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'discreet' => true
+
+		]);
 	}
 
 	public function render_cell($record)

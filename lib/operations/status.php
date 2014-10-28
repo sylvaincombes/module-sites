@@ -23,12 +23,11 @@ class StatusOperation extends \ICanBoogie\Operation
 {
 	protected function get_controls()
 	{
-		return array
-		(
-			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER
-		)
+		return [
 
-		+ parent::get_controls();
+			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER
+
+		] + parent::get_controls();
 	}
 
 	protected function validate(Errors $errors)
@@ -37,7 +36,7 @@ class StatusOperation extends \ICanBoogie\Operation
 		{
 			$status = $this->request['status'];
 
-			if ($status === null || !in_array($status, array(Site::STATUS_OK, Site::STATUS_UNAVAILABLE, Site::STATUS_UNAUTHORIZED, Site::STATUS_NOT_FOUND)))
+			if ($status === null || !in_array($status, [ Site::STATUS_OK, Site::STATUS_UNAVAILABLE, Site::STATUS_UNAUTHORIZED, Site::STATUS_NOT_FOUND ]))
 			{
 				throw new \InvalidArgumentException('Invalid status value.');
 			}
@@ -48,13 +47,14 @@ class StatusOperation extends \ICanBoogie\Operation
 
 	protected function process()
 	{
-		static $status_names = array
-		(
+		static $status_names = [
+
 			Site::STATUS_OK => 'ok (online)',
 			Site::STATUS_UNAVAILABLE => 'unavailable',
 			Site::STATUS_UNAUTHORIZED => 'unauthorized',
 			Site::STATUS_NOT_FOUND => 'not found (offline)'
-		);
+
+		];
 
 		if ($this->request->is_put)
 		{
@@ -64,7 +64,7 @@ class StatusOperation extends \ICanBoogie\Operation
 			$record->status = $status;
 			$record->save();
 
-			$this->response->message = new FormattedString('The site %title is now ' . $status_names[$status] . '.', array('title' => $record->title));
+			$this->response->message = new FormattedString('The site %title is now ' . $status_names[$status] . '.', [ 'title' => $record->title ]);
 		}
 
 		return $this->record->status;

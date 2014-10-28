@@ -34,7 +34,7 @@ class Hooks
 	static public function on_core_run(Core\RunEvent $event, Core $target)
 	{
 		#
-		# If the ICanBoogie\ActiveRecord\StatementNotValid is raised it might be becuase the
+		# If the ICanBoogie\ActiveRecord\StatementNotValid is raised it might be because the
 		# module is not installed, in that case we silently return, otherwise we re-throw the
 		# exception.
 		#
@@ -47,7 +47,7 @@ class Hooks
 		{
 			global $core;
 
-			if (!$core->models['sites']->is_installed(new Errors()))
+			if (!$core->models['sites']->is_installed(new Errors))
 			{
 				return;
 			}
@@ -103,7 +103,7 @@ class Hooks
 
 		$request = $event->request;
 
-		if (!in_array($request->method, array(Request::METHOD_ANY, Request::METHOD_GET, Request::METHOD_HEAD)))
+		if (!in_array($request->method, [ Request::METHOD_ANY, Request::METHOD_GET, Request::METHOD_HEAD ]))
 		{
 			return;
 		}
@@ -145,13 +145,11 @@ class Hooks
 						$location .= '?' . $query_string;
 					}
 
-					$event->response = new RedirectResponse
-					(
-						$location, 302, array
-						(
-							'Icybee-Redirected-By' => __CLASS__ . '::' . __FUNCTION__
-						)
-					);
+					$event->response = new RedirectResponse($location, 302, [
+
+						'Icybee-Redirected-By' => __CLASS__ . '::' . __FUNCTION__
+
+					]);
 
 					return;
 				}

@@ -12,8 +12,9 @@
 namespace Icybee\Modules\Sites;
 
 use ICanBoogie\ActiveRecord\ActiveRecordException;
-use Icybee\Modules\Users\User;
 use ICanBoogie\HTTP\Request;
+
+use Icybee\Modules\Users\User;
 
 /**
  * Models for Sites.
@@ -26,7 +27,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	 *
 	 * Sets the `created_at` and `updated_at` properties if they are not defined.
 	 */
-	public function save(array $properties, $key=null, array $options=array())
+	public function save(array $properties, $key=null, array $options=[])
 	{
 		if (isset($properties['path']))
 		{
@@ -81,7 +82,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 		if (!$sites)
 		{
-			self::$cached_sites = array();
+			self::$cached_sites = [];
 
 			try
 			{
@@ -186,16 +187,14 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 		if (self::$default_site === null)
 		{
-			self::$default_site = Site::from
-			(
-				array
-				(
-					'title' => 'Undefined',
-					'language' => $core->language,
-					'timezone' => $core->timezone,
-					'status' => Site::STATUS_OK
-				)
-			);
+			self::$default_site = Site::from([
+
+				'title' => 'Undefined',
+				'language' => $core->language,
+				'timezone' => $core->timezone,
+				'status' => Site::STATUS_OK
+
+			]);
 		}
 
 		return self::$default_site;

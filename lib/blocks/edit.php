@@ -18,6 +18,13 @@ use Brickrouge\Widget;
 
 class EditBlock extends \Icybee\EditBlock
 {
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add(DIR . 'public/admin.css');
+	}
+
 	protected function lazy_get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive(parent::lazy_get_attributes(), [
@@ -48,11 +55,7 @@ class EditBlock extends \Icybee\EditBlock
 
 	protected function lazy_get_children()
 	{
-		global $core;
-
-		$core->document->css->add(DIR . 'public/admin.css');
-
-		$languages = $core->locale['languages'];
+		$languages = \ICanBoogie\app()->locale['languages'];
 
 		asort($languages);
 
@@ -188,32 +191,6 @@ class EditBlock extends \Icybee\EditBlock
 				]
 			])
 		]);
-	}
-
-	private function get_site_models()
-	{
-		$models = [];
-
-		$dh = opendir(\ICanBoogie\DOCUMENT_ROOT . 'protected');
-
-		while ($file = readdir($dh))
-		{
-			if ($file[0] == '.' || $file == 'all' || $file == 'default')
-			{
-				continue;
-			}
-
-			$models[] = $file;
-		}
-
-		if (!$models)
-		{
-			return $models;
-		}
-
-		sort($models);
-
-		return array_combine($models, $models);
 	}
 
 	protected function get_control_translation_sources(array $values)

@@ -71,13 +71,12 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	 */
 	static public function find_by_request(Request $request, User $user=null)
 	{
-		global $core;
-
+		$app = \ICanBoogie\app();
 		$sites = self::$cached_sites;
 
 		if ($sites === null)
 		{
-			$sites = $core->vars['cached_sites'];
+			$sites = $app->vars['cached_sites'];
 		}
 
 		if (!$sites)
@@ -86,9 +85,9 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 			try
 			{
-				self::$cached_sites = $sites = $core->models['sites']->all;
+				self::$cached_sites = $sites = $app->models['sites']->all;
 
-				$core->vars['cached_sites'] = $sites;
+				$app->vars['cached_sites'] = $sites;
 			}
 			catch (ActiveRecordException $e)
 			{
@@ -96,7 +95,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 			}
 			catch (\Exception $e)
 			{
-				return self::get_default_site();
+				return self::get_default_site($app);
 			}
 		}
 
@@ -171,7 +170,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 			}
 		}
 
-		return $match ? $match : self::get_default_site();
+		return $match ? $match : self::get_default_site($app);
 	}
 
 	static private $default_site;
@@ -181,17 +180,15 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	 *
 	 * @return Site
 	 */
-	static private function get_default_site()
+	static private function get_default_site(\ICanBoogie\Core $app)
 	{
-		global $core;
-
 		if (self::$default_site === null)
 		{
 			self::$default_site = Site::from([
 
 				'title' => 'Undefined',
-				'language' => $core->language,
-				'timezone' => $core->timezone,
+				'language' => $app->language,
+				'timezone' => $app->timezone,
 				'status' => Site::STATUS_OK
 
 			]);

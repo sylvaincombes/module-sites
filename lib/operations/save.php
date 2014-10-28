@@ -20,11 +20,9 @@ class SaveOperation extends \ICanBoogie\SaveOperation
 {
 	protected function process()
 	{
-		global $core;
-
 		$rc = parent::process();
 
-		unset($core->vars['cached_sites']);
+		unset(\ICanBoogie\app()->vars['cached_sites']);
 
 		$record = $this->module->model[$rc['key']];
 

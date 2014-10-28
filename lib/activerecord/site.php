@@ -87,9 +87,7 @@ class Site extends \ICanBoogie\ActiveRecord
 	 */
 	public function save()
 	{
-		global $core;
-
-		unset($core->vars['cached_sites']);
+		unset(\ICanBoogie\app()->vars['cached_sites']);
 
 		return parent::save();
 	}
@@ -120,7 +118,6 @@ class Site extends \ICanBoogie\ActiveRecord
 		}
 		else if (empty($parts[2]))
 		{
-			//$parts[2] = 'www';
 			unset($parts[2]);
 		}
 

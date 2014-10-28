@@ -45,9 +45,7 @@ class Hooks
 		}
 		catch (\ICanBoogie\ActiveRecord\StatementNotValid $e)
 		{
-			global $core;
-
-			if (!$core->models['sites']->is_installed(new Errors))
+			if (!$target->models['sites']->is_installed(new Errors))
 			{
 				return;
 			}
@@ -94,9 +92,9 @@ class Hooks
 	 */
 	static public function before_http_dispatcher_dispatch(Dispatcher\BeforeDispatchEvent $event, Dispatcher $target)
 	{
-		global $core;
+		$app = \ICanBoogie\app();
 
-		if ($core->site_id)
+		if ($app->site_id)
 		{
 			return;
 		}
@@ -117,8 +115,8 @@ class Hooks
 
 		try
 		{
-			$query = $core->models['sites']->order('weight');
-			$user = $core->user;
+			$query = $app->models['sites']->order('weight');
+			$user = $app->user;
 
 			if ($user->is_guest || $user instanceof \Icybee\Modules\Members\Member)
 			{
@@ -129,7 +127,7 @@ class Hooks
 
 			if ($site)
 			{
-				$request_url = \ICanBoogie\normalize_url_path($core->site->url . $request->path);
+				$request_url = \ICanBoogie\normalize_url_path($app->site->url . $request->path);
 				$location = \ICanBoogie\normalize_url_path($site->url . $path);
 
 				#
@@ -178,14 +176,14 @@ class Hooks
 	 */
 	static public function get_node_site(\Icybee\Modules\Nodes\Node $node)
 	{
-		global $core;
-
 		if (!$node->siteid)
 		{
 			return;
 		}
 
-		return $core->site_id == $node->siteid ? $core->site : $core->models['sites'][$node->siteid];
+		$app = \ICanBoogie\app();
+
+		return $app->site_id == $node->siteid ? $app->site : $app->models['sites'][$node->siteid];
 	}
 
 	/**

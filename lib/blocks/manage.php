@@ -223,8 +223,6 @@ class LanguageColumn extends Column
 
 	public function render_cell($record)
 	{
-		global $core;
-
 		$property = $this->id;
 
 		return new FilterDecorator
@@ -232,7 +230,7 @@ class LanguageColumn extends Column
 			$record,
 			$property,
 			$this->manager->is_filtering($property),
-			\ICanBoogie\capitalize($core->locale['languages'][$record->$property])
+			\ICanBoogie\capitalize(\ICanBoogie\app()->locale['languages'][$record->$property])
 		);
 	}
 }

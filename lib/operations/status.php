@@ -11,11 +11,6 @@
 
 namespace Icybee\Modules\Sites;
 
-use ICanBoogie\Errors;
-use ICanBoogie\I18n\FormattedString;
-
-use Icybee\Modules\Sites\Site;
-
 /**
  * Updates the status of a website.
  */
@@ -30,7 +25,7 @@ class StatusOperation extends \ICanBoogie\Operation
 		] + parent::get_controls();
 	}
 
-	protected function validate(Errors $errors)
+	protected function validate(\ICanBoogie\Errors $errors)
 	{
 		if ($this->request->is_put)
 		{
@@ -64,7 +59,11 @@ class StatusOperation extends \ICanBoogie\Operation
 			$record->status = $status;
 			$record->save();
 
-			$this->response->message = new FormattedString('The site %title is now ' . $status_names[$status] . '.', [ 'title' => $record->title ]);
+			$this->response->message = $this->format('The site %title is now ' . $status_names[$status] . '.', [
+
+				'title' => $record->title
+
+			]);
 		}
 
 		return $this->record->status;

@@ -20,7 +20,7 @@ class SaveOperation extends \ICanBoogie\SaveOperation
 	{
 		$rc = parent::process();
 
-		unset(\ICanBoogie\app()->vars['cached_sites']);
+		unset($this->app->vars['cached_sites']);
 
 		$record = $this->module->model[$rc['key']];
 

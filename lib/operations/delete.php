@@ -18,10 +18,8 @@ class DeleteOperation extends \ICanBoogie\DeleteOperation
 {
 	protected function process()
 	{
-		$rc = parent::process();
+		unset($this->app->vars['cached_sites']);
 
-		unset(\ICanBoogie\app()->vars['cached_sites']);
-
-		return $rc;
+		return parent::process();
 	}
 }

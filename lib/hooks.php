@@ -199,9 +199,9 @@ class Hooks
 	 *
 	 * @return Site
 	 */
-	static public function get_core_site(Core $core)
+	static public function get_core_site(Core $app)
 	{
-		return Model::find_by_request($core->request ?: $core->initial_request);
+		return Model::find_by_request($app->request ?: $app->initial_request);
 	}
 
 	/**
@@ -216,13 +216,13 @@ class Hooks
 	 * $core->site_id;
 	 * </pre>
 	 *
-	 * @param Core $core
+	 * @param Core $app
 	 *
 	 * @return int
 	 */
-	static public function get_core_site_id(Core $core)
+	static public function get_core_site_id(Core $app)
 	{
-		$site = self::get_core_site($core);
+		$site = self::get_core_site($app);
 
 		return $site ? $site->siteid : null;
 	}

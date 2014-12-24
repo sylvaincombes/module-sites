@@ -166,7 +166,7 @@ class Hooks
 	 * <pre>
 	 * <?php
 	 *
-	 * $core->models['nodes']->one->site;
+	 * $app->models['nodes']->one->site;
 	 * </pre>
 	 *
 	 * @param \Icybee\Modules\Nodes\Node $node
@@ -194,7 +194,7 @@ class Hooks
 	 * <pre>
 	 * <?php
 	 *
-	 * $core->site;
+	 * $app->site;
 	 * </pre>
 	 *
 	 * @return Site
@@ -213,7 +213,7 @@ class Hooks
 	 * <pre>
 	 * <?php
 	 *
-	 * $core->site_id;
+	 * $app->site_id;
 	 * </pre>
 	 *
 	 * @param Core $app
@@ -235,7 +235,7 @@ class Hooks
 	 * <pre>
 	 * <?php
 	 *
-	 * $core->request->context->site;
+	 * $app->request->context->site;
 	 * </pre>
 	 *
 	 * @return Site
@@ -253,7 +253,7 @@ class Hooks
 	 * <pre>
 	 * <?php
 	 *
-	 * $core->request->context->site_id;
+	 * $app->request->context->site_id;
 	 * </pre>
 	 *
 	 * @return int

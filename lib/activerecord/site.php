@@ -20,7 +20,7 @@ use ICanBoogie\Debug;
  *
  * @property array $translations Translations for the site.
  *
- * @method Icybee\Modules\Pages\Page|null resolve_view_target() resolve_view_target(string $view)
+ * @method \Icybee\Modules\Pages\Page|null resolve_view_target() resolve_view_target(string $view)
  * Return the page on which the view is displayed, or null if the view is not displayed.
  *
  * This method is injected by the "pages" module.
@@ -31,9 +31,13 @@ use ICanBoogie\Debug;
  *
  * @property \ICanBoogie\DateTime $created_at Date and time at which the site was created.
  * @property \ICanBoogie\DateTime $updated_at Date and time at which the site was updated.
+ * @property-read string $url The URL of the website.
+ * @property-read string $native The native source of the site.
  */
 class Site extends \ICanBoogie\ActiveRecord
 {
+	const MODEL_ID = 'sites';
+
 	const SITEID = 'siteid';
 	const SUBDOMAIN = 'subdomain';
 	const DOMAIN = 'domain';
@@ -73,21 +77,11 @@ class Site extends \ICanBoogie\ActiveRecord
 	use UpdatedAtProperty;
 
 	/**
-	 * Default `$model` to "sites".
-	 *
-	 * @param string $model
-	 */
-	public function __construct($model='sites')
-	{
-		parent::__construct($model);
-	}
-
-	/**
 	 * Clears the sites cache.
 	 */
 	public function save()
 	{
-		unset(\ICanBoogie\app()->vars['cached_sites']);
+		unset($this->app->vars['cached_sites']);
 
 		return parent::save();
 	}
@@ -251,7 +245,7 @@ class Site extends \ICanBoogie\ActiveRecord
 		}
 	}
 
-	protected function lazy_get_native()
+	protected function get_native()
 	{
 		$native_id = $this->nativeid;
 

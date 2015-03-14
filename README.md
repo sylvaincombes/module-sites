@@ -43,7 +43,7 @@ Returns the website a node belongs to.
 ```php
 <?php
 
-$core->models['nodes']->one->site;
+$app->models['nodes']->one->site;
 ```
 
 
@@ -57,9 +57,9 @@ Returns the website matching the current request.
 ```php
 <?php
 
-$core->site;
+$app->site;
 # or
-$core->request->context->site;
+$app->request->context->site;
 ```
 
 
@@ -73,9 +73,9 @@ Returns the identifier of the website matching the current request.
 ```php
 <?php
 
-$core->site_id;
+$app->site_id;
 # or
-$core->request->context->site_id;
+$app->request->context->site_id;
 ```
 
 
@@ -89,7 +89,7 @@ Returns the website matching the request context.
 ```php
 <?php
 
-$core->request->context->site;
+$app->request->context->site;
 ```
 
 
@@ -103,7 +103,7 @@ Returns the identifier of the website matching the request context.
 ```php
 <?php
 
-$core->request->context->site_id;
+$app->request->context->site_id;
 ```
 
 

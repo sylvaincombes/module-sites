@@ -11,23 +11,24 @@
 
 namespace Icybee\Modules\Sites;
 
-use ICanBoogie\ActiveRecord\ActiveRecordException;
+use ICanBoogie\ActiveRecord;
+use ICanBoogie\DateTime;
 use ICanBoogie\HTTP\Request;
-
-use Icybee\Modules\Users\User;
 
 /**
  * Models for Sites.
  */
-class Model extends \ICanBoogie\ActiveRecord\Model
+class Model extends ActiveRecord\Model
 {
 	/**
 	 * Makes sure that if defined the `path` property starts with a slash '/' but doesn't end
 	 * with one.
 	 *
 	 * Sets the `created_at` and `updated_at` properties if they are not defined.
+	 *
+	 * @inheritdoc
 	 */
-	public function save(array $properties, $key=null, array $options=[])
+	public function save(array $properties, $key = null, array $options = [])
 	{
 		if (isset($properties['path']))
 		{
@@ -43,12 +44,12 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 		if (!$key && empty($properties['created_at']))
 		{
-			$properties['created_at'] = gmdate('Y-m-d H:i:s');
+			$properties['created_at'] = DateTime::now();
 		}
 
 		if (empty($properties['updated_at']))
 		{
-			$properties['updated_at'] = gmdate('Y-m-d H:i:s');
+			$properties['updated_at'] = DateTime::now();
 		}
 
 		return parent::save($properties, $key, $options);
@@ -62,14 +63,13 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	 * If there is no site record defined a default site record is returned.
 	 *
 	 * @param Request $request
-	 * @param User $user
-	 *
-	 * @throws \Exception\DatabaseConnection if the connection to the database where site records
-	 * are stored could not be established.
 	 *
 	 * @return Site
+	 *
+	 * @throws ActiveRecord\Exception
+	 * @throws \Exception
 	 */
-	static public function find_by_request(Request $request, User $user=null)
+	static public function find_by_request(Request $request)
 	{
 		$app = \ICanBoogie\app();
 		$sites = self::$cached_sites;
@@ -89,7 +89,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 				$app->vars['cached_sites'] = $sites;
 			}
-			catch (ActiveRecordException $e)
+			catch (ActiveRecord\Exception $e)
 			{
 				throw $e;
 			}
@@ -127,15 +127,6 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 		foreach ($sites as $site)
 		{
 			$score = 0;
-
-			#
-			# guest users don't have access to sites that are not online.
-			#
-
-			if ($site->status != Site::STATUS_OK && $user && $user->is_guest)
-			{
-				continue;
-			}
 
 			if ($site->tld)
 			{

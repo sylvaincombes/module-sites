@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Sites;
 
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\CreatedAtProperty;
 use ICanBoogie\ActiveRecord\UpdatedAtProperty;
 use ICanBoogie\Debug;
@@ -32,8 +33,13 @@ use ICanBoogie\Debug;
  * @property \ICanBoogie\DateTime $created_at Date and time at which the site was created.
  * @property \ICanBoogie\DateTime $updated_at Date and time at which the site was updated.
  */
-class Site extends \ICanBoogie\ActiveRecord
+class Site extends ActiveRecord
 {
+	use CreatedAtProperty;
+	use UpdatedAtProperty;
+
+	const MODEL_ID = 'sites';
+
 	const SITEID = 'siteid';
 	const SUBDOMAIN = 'subdomain';
 	const DOMAIN = 'domain';
@@ -68,19 +74,6 @@ class Site extends \ICanBoogie\ActiveRecord
 	public $timezone = '';
 	public $email = '';
 	public $status = 0;
-
-	use CreatedAtProperty;
-	use UpdatedAtProperty;
-
-	/**
-	 * Default `$model` to "sites".
-	 *
-	 * @param string $model
-	 */
-	public function __construct($model='sites')
-	{
-		parent::__construct($model);
-	}
 
 	/**
 	 * Clears the sites cache.
@@ -124,133 +117,6 @@ class Site extends \ICanBoogie\ActiveRecord
 		return 'http://' . implode('.', array_reverse($parts)) . $this->path;
 	}
 
-	/**
-	 * Returns the available templates for the site
-	 */
-	protected function lazy_get_templates()
-	{
-		$templates = [];
-		$root = \ICanBoogie\DOCUMENT_ROOT;
-
-		$models = [ 'default', 'all' ];
-
-		foreach ($models as $model)
-		{
-			$path = self::BASE . $model . '/templates';
-
-			if (!is_dir($root . $path))
-			{
-				continue;
-			}
-
-			$dh = opendir($root . $path);
-
-			if (!$dh)
-			{
-				Debug::trigger('Unable to open directory %path', [ '%path' => $path ]);
-
-				continue;
-			}
-
-			while (($file = readdir($dh)) !== false)
-			{
-				if ($file{0} == '.')
-				{
-					continue;
-				}
-
-				$pos = strrpos($file, '.');
-
-				if (!$pos)
-				{
-					continue;
-				}
-
-				$templates[$file] = $file;
-			}
-
-			closedir($dh);
-		}
-
-		sort($templates);
-
-		return $templates;
-	}
-
-	protected function lazy_get_partial_templates()
-	{
-		$templates = [];
-		$root = \ICanBoogie\DOCUMENT_ROOT;
-
-		$models = [ 'default', 'all' ];
-
-		foreach ($models as $model)
-		{
-			$path = self::BASE . $model . '/templates/partials';
-
-			if (!is_dir($root . $path))
-			{
-				continue;
-			}
-
-			$dh = opendir($root . $path);
-
-			if (!$dh)
-			{
-				Debug::trigger('Unable to open directory %path', [ '%path' => $path ]);
-
-				continue;
-			}
-
-			while (($file = readdir($dh)) !== false)
-			{
-				if ($file{0} == '.')
-				{
-					continue;
-				}
-
-				$pos = strrpos($file, '.');
-
-				if (!$pos)
-				{
-					continue;
-				}
-
-				$id = preg_replace('#\.(php|html)$#', '', $file);
-				$templates[$id] = $root . $path . '/' . $file;
-			}
-
-			closedir($dh);
-		}
-
-		return $templates;
-	}
-
-	/**
-	 * Resolve the location of a relative path according site inheritance.
-	 *
-	 * @param string $relative The path to the file to locate.
-	 */
-
-	public function resolve_path($relative)
-	{
-		$root = $_SERVER['DOCUMENT_ROOT'];
-
-		$try = self::BASE . 'default/' . $relative;
-
-		if (file_exists($root . $try))
-		{
-			return $try;
-		}
-
-		$try = self::BASE . 'all/' . $relative;
-
-		if (file_exists($root . $try))
-		{
-			return $try;
-		}
-	}
-
 	protected function lazy_get_native()
 	{
 		$native_id = $this->nativeid;
@@ -267,12 +133,16 @@ class Site extends \ICanBoogie\ActiveRecord
 	{
 		if ($this->nativeid)
 		{
-			return $this->model->where('siteid != ? AND (siteid = ? OR nativeid = ?)', $this->siteid, $this->nativeid, $this->nativeid)->order('language')->all;
+			return $this->model
+				->where('siteid != ? AND (siteid = ? OR nativeid = ?)', $this->siteid, $this->nativeid, $this->nativeid)
+				->order('language')
+				->all;
 		}
-		else
-		{
-			return $this->model->where('nativeid = ?', $this->siteid)->order('language')->all;
-		}
+
+		return $this->model
+			->where('nativeid = ?', $this->siteid)
+			->order('language')
+			->all;
 	}
 
 	private $_server_name;

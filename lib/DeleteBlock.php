@@ -11,6 +11,9 @@
 
 namespace Icybee\Modules\Sites;
 
+/**
+ * @property Site $record
+ */
 class DeleteBlock extends \Icybee\DeleteBlock
 {
 	/**

@@ -2,7 +2,7 @@
 	"name": "icybee/module-sites",
 	"type": "icanboogie-module",
 	"description": "Manages websites",
-	"keywords": [ "website", "multi-site" ],
+	"keywords": [ "icybee", "website", "multi-site" ],
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
@@ -12,12 +12,15 @@
 			"role" : "Developer"
 		}
 	],
+
 	"require": {
-		"php": ">=5.4.0",
-		"icanboogie/module-installer": "~1.2",
-		"icanboogie/activerecord": "~2.1"
+		"php": ">=5.5.0",
+		"icanboogie/module-installer": "~1.2.3",
+		"icanboogie/http": "~2.3.1",
+		"icanboogie/activerecord": "~2.2.0"
 	},
+
 	"autoload": {
-		"classmap": [ "lib" ]
+		"psr-4": { "Icybee\\Modules\\Sites\\": "lib" }
 	}
 }

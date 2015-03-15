@@ -11,10 +11,15 @@
 
 namespace Icybee\Modules\Sites;
 
+use ICanBoogie\Errors;
+use ICanBoogie\Operation;
+
 /**
  * Updates the status of a website.
+ *
+ * @property Site $record
  */
-class StatusOperation extends \ICanBoogie\Operation
+class StatusOperation extends Operation
 {
 	protected function get_controls()
 	{
@@ -25,7 +30,7 @@ class StatusOperation extends \ICanBoogie\Operation
 		] + parent::get_controls();
 	}
 
-	protected function validate(\ICanBoogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		if ($this->request->is_put)
 		{

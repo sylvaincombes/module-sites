@@ -14,7 +14,6 @@ namespace Icybee\Modules\Sites;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\CreatedAtProperty;
 use ICanBoogie\ActiveRecord\UpdatedAtProperty;
-use ICanBoogie\Debug;
 
 /**
  * Representation of a website.
@@ -32,6 +31,8 @@ use ICanBoogie\Debug;
  *
  * @property \ICanBoogie\DateTime $created_at Date and time at which the site was created.
  * @property \ICanBoogie\DateTime $updated_at Date and time at which the site was updated.
+ * @property-read string $url
+ * @property ServerName $server_name
  */
 class Site extends ActiveRecord
 {
@@ -80,7 +81,7 @@ class Site extends ActiveRecord
 	 */
 	public function save()
 	{
-		unset(\ICanBoogie\app()->vars['cached_sites']);
+		unset($this->app->vars['cached_sites']);
 
 		return parent::save();
 	}

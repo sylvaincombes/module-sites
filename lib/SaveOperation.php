@@ -13,6 +13,8 @@ namespace Icybee\Modules\Sites;
 
 /**
  * Creates or updates a website.
+ *
+ * @property Site $record
  */
 class SaveOperation extends \ICanBoogie\SaveOperation
 {
@@ -22,11 +24,9 @@ class SaveOperation extends \ICanBoogie\SaveOperation
 
 		unset($this->app->vars['cached_sites']);
 
-		$record = $this->module->model[$rc['key']];
-
 		$this->response->message = $this->format($rc['mode'] == 'update' ? '%title has been updated in %module.' : '%title has been created in %module.', [
 
-			'title' => \ICanBoogie\shorten($record->title),
+			'title' => \ICanBoogie\shorten($this->record->title),
 			'module' => $this->module->title
 
 		]);

@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Sites;
 
 use ICanBoogie\ActiveRecord;
+use ICanBoogie\Core;
 use ICanBoogie\DateTime;
 use ICanBoogie\HTTP\Request;
 
@@ -169,9 +170,11 @@ class Model extends ActiveRecord\Model
 	/**
 	 * Returns a default site active record.
 	 *
+	 * @param Core $app
+	 *
 	 * @return Site
 	 */
-	static private function get_default_site(\ICanBoogie\Core $app)
+	static private function get_default_site(Core $app)
 	{
 		if (self::$default_site === null)
 		{

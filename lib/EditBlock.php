@@ -16,6 +16,9 @@ use Brickrouge\Form;
 use Brickrouge\Text;
 use Brickrouge\Widget;
 
+/**
+ * @property array $languages
+ */
 class EditBlock extends \Icybee\EditBlock
 {
 	static protected function add_assets(\Brickrouge\Document $document)
@@ -23,6 +26,15 @@ class EditBlock extends \Icybee\EditBlock
 		parent::add_assets($document);
 
 		$document->css->add(DIR . 'public/admin.css');
+	}
+
+	protected function lazy_get_languages()
+	{
+		$languages = $this->app->locale['languages'];
+
+		asort($languages);
+
+		return $languages;
 	}
 
 	protected function lazy_get_attributes()
@@ -55,10 +67,7 @@ class EditBlock extends \Icybee\EditBlock
 
 	protected function lazy_get_children()
 	{
-		$languages = \ICanBoogie\app()->locale['languages'];
-
-		asort($languages);
-
+		$languages = $this->languages;
 		$tz = ini_get('date.timezone');
 
 		#
@@ -202,7 +211,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		if (!$options)
 		{
-			return;
+			return null;
 		}
 
 		return new Element('select', [

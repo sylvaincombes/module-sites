@@ -12,11 +12,13 @@
 namespace Icybee\Modules\Sites;
 
 use ICanBoogie\Core;
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\Errors;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Routing;
+use Icybee\Modules\Users\User;
 
 class Hooks
 {
@@ -43,7 +45,7 @@ class Hooks
 		{
 			$target->site = $site = Model::find_by_request($event->request);
 		}
-		catch (\ICanBoogie\ActiveRecord\StatementNotValid $e)
+		catch (ActiveRecord\StatementNotValid $e)
 		{
 			if (!$target->models['sites']->is_installed(new Errors))
 			{
@@ -115,6 +117,8 @@ class Hooks
 
 		try
 		{
+			/* @var $user User */
+
 			$query = $app->models['sites']->order('weight');
 			$user = $app->user;
 
@@ -163,11 +167,11 @@ class Hooks
 	 *
 	 * This is the getter for the nodes' `site` magic property.
 	 *
-	 * <pre>
+	 * ```php
 	 * <?php
 	 *
 	 * $app->models['nodes']->one->site;
-	 * </pre>
+	 * ```
 	 *
 	 * @param \Icybee\Modules\Nodes\Node $node
 	 *
@@ -178,7 +182,7 @@ class Hooks
 	{
 		if (!$node->siteid)
 		{
-			return;
+			return null;
 		}
 
 		$app = \ICanBoogie\app();
@@ -191,11 +195,13 @@ class Hooks
 	 *
 	 * This is the getter for the core's {@link Core::$site} magic property.
 	 *
-	 * <pre>
+	 * ```php
 	 * <?php
 	 *
 	 * $app->site;
-	 * </pre>
+	 * ```
+	 *
+	 * @param Core $app
 	 *
 	 * @return Site
 	 */
@@ -210,11 +216,11 @@ class Hooks
 	 * This is the getter for the core's {@link Site::site_id} magic
 	 * property.
 	 *
-	 * <pre>
+	 * ```php
 	 * <?php
 	 *
 	 * $app->site_id;
-	 * </pre>
+	 * ```
 	 *
 	 * @param Core $app
 	 *
@@ -232,11 +238,13 @@ class Hooks
 	 *
 	 * This is the getter for the {@link \ICanBoogie\HTTP\Request\Context::site} magic property.
 	 *
-	 * <pre>
+	 * ```php
 	 * <?php
 	 *
 	 * $app->request->context->site;
-	 * </pre>
+	 * ```
+	 *
+	 * @param Request\Context $context
 	 *
 	 * @return Site
 	 */
@@ -250,11 +258,13 @@ class Hooks
 	 *
 	 * This is the getter for the {@link \ICanBoogie\HTTP\Request\Context::site_id} magic property.
 	 *
-	 * <pre>
+	 * ```php
 	 * <?php
 	 *
 	 * $app->request->context->site_id;
-	 * </pre>
+	 * ```
+	 *
+	 * @param Request\Context $context
 	 *
 	 * @return int
 	 */

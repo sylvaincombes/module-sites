@@ -15,6 +15,31 @@ use ICanBoogie\Updater\Update;
 use ICanBoogie\Updater\AssertionFailed;
 
 /**
+ * - Rename table `site_sites` as `sites`.
+ *
+ * @module users
+ */
+class Update20120101 extends Update
+{
+	public function update_table_sites()
+	{
+		$db = $this->app->db;
+
+		if (!$db->table_exists('site_sites'))
+		{
+			throw new AssertionFailed('assert_table_exists', 'site_sites');
+		}
+
+		if ($db->table_exists('sites'))
+		{
+			throw new AssertionFailed('assert_not_table_exists', 'sites');
+		}
+
+		$db("RENAME TABLE `site_sites` TO `sites`");
+	}
+}
+
+/**
  * - Renames the `modified` columns as `updated_at`.
  *
  * @module sites

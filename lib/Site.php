@@ -115,7 +115,19 @@ class Site extends ActiveRecord
 			unset($parts[2]);
 		}
 
-		return 'http://' . implode('.', array_reverse($parts)) . $this->path;
+		$port = $_SERVER['SERVER_PORT'];
+
+		if ($port == 80)
+		{
+			$port = null;
+		}
+
+		if ($port)
+		{
+			$port = ":$port";
+		}
+
+		return 'http://' . implode('.', array_reverse($parts)) . $port . $this->path;
 	}
 
 	protected function lazy_get_native()
